@@ -229,7 +229,17 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/progress.js"></script>
   <script>
+    // Check if user has access to this page
+    if (!ProgressSystem.checkPageAccess('phenomenon.html')) {
+      alert('このページにアクセスするには LEVEL 3 が必要です。');
+      window.location.href = './dashboard.html';
+    } else {
+      // Track page view and award XP
+      ProgressSystem.trackActivity('phenomenon_view');
+    }
+
     // Accordion functionality
     document.querySelectorAll('.accordion-trigger').forEach(trigger => {
       trigger.addEventListener('click', function() {

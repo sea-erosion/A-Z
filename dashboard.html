@@ -150,18 +150,22 @@
             <div class="card" style="background-color: rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.1);">
               <div class="card-header" style="border-bottom-color: rgba(255, 255, 255, 0.05);">
                 <div class="card-title text-muted" style="font-size: 0.875rem;">
-                  <span>アクティビティ</span>
+                  <span>経験値 & レベル</span>
                 </div>
               </div>
               <div class="card-content pt-6">
                 <div class="space-y-4">
                   <div>
-                    <div style="font-size: 2rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: white;">0</div>
-                    <div class="font-mono text-muted" style="font-size: 0.75rem;">収束任務参加回数</div>
+                    <div style="font-size: 2rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--primary);" id="userXP">0 XP</div>
+                    <div class="font-mono text-muted" style="font-size: 0.75rem;">現在の経験値</div>
                   </div>
                   <div>
-                    <div style="font-size: 2rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: white;">0</div>
-                    <div class="font-mono text-muted" style="font-size: 0.75rem;">文書閲覧回数</div>
+                    <div class="font-mono text-muted" style="font-size: 0.75rem; margin-bottom: 0.5rem;">
+                      次のレベルまで: <span id="xpNeeded" style="color: var(--primary);">---</span>
+                    </div>
+                    <div style="height: 0.5rem; width: 100%; background-color: rgba(255, 255, 255, 0.1); overflow: hidden;">
+                      <div id="xpProgress" style="height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: 0%; transition: width 0.5s;"></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -169,7 +173,71 @@
 
           </div>
 
+          <!-- Unlockable Content -->
+          <div class="card" style="background-color: rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.05);">
+            <div class="card-header">
+              <h2 class="font-mono text-primary" style="font-size: 1.125rem; text-transform: uppercase;">
+                アクセス可能なコンテンツ
+              </h2>
+            </div>
+            <div class="card-content pt-6">
+              <div id="unlockedContent" class="grid grid-cols-2" style="gap: 1rem;">
+                <!-- Will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Locked Content -->
+          <div class="card" style="background-color: rgba(127, 29, 29, 0.05); border-color: rgba(239, 68, 68, 0.2);">
+            <div class="card-header">
+              <h2 class="font-mono text-destructive" style="font-size: 1.125rem; text-transform: uppercase;">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: inline; margin-right: 0.5rem;">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                ロック中のコンテンツ
+              </h2>
+            </div>
+            <div class="card-content pt-6">
+              <div id="lockedContent" class="grid grid-cols-2" style="gap: 1rem;">
+                <!-- Will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+
           <!-- Recent Activity -->
+          <div class="card" style="background-color: rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.05);">
+            <div class="card-header">
+              <h2 class="font-mono text-primary" style="font-size: 1.125rem; text-transform: uppercase;">
+                経験値を獲得する方法
+              </h2>
+            </div>
+            <div class="card-content pt-6">
+              <div class="space-y-3">
+                <div class="flex justify-between items-center" style="padding: 0.75rem; background-color: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05);">
+                  <span style="color: var(--foreground);">プロフィール閲覧</span>
+                  <span class="font-mono" style="color: var(--primary); font-weight: 600;">+10 XP</span>
+                </div>
+                <div class="flex justify-between items-center" style="padding: 0.75rem; background-color: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05);">
+                  <span style="color: var(--foreground);">部門情報閲覧</span>
+                  <span class="font-mono" style="color: var(--primary); font-weight: 600;">+20 XP</span>
+                </div>
+                <div class="flex justify-between items-center" style="padding: 0.75rem; background-color: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05);">
+                  <span style="color: var(--foreground);">チャットメッセージ送信</span>
+                  <span class="font-mono" style="color: var(--primary); font-weight: 600;">+5 XP</span>
+                </div>
+                <div class="flex justify-between items-center" style="padding: 0.75rem; background-color: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05);">
+                  <span style="color: var(--foreground);">海蝕現象アーカイブ閲覧</span>
+                  <span class="font-mono" style="color: var(--primary); font-weight: 600;">+30 XP</span>
+                </div>
+                <div class="flex justify-between items-center" style="padding: 0.75rem; background-color: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05);">
+                  <span style="color: var(--foreground);">デイリーログイン</span>
+                  <span class="font-mono" style="color: var(--primary); font-weight: 600;">+25 XP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity (old) -->
           <div class="card" style="background-color: rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.05);">
             <div class="card-header">
               <h2 class="font-mono text-primary" style="font-size: 1.125rem; text-transform: uppercase;">
@@ -192,6 +260,7 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/progress.js"></script>
   <script>
     const CURRENT_USER_KEY = 'kaishoku_current_user';
 
@@ -212,11 +281,35 @@
       'port': '港湾部門'
     };
 
+    const pageNames = {
+      'index.html': 'ステータス・ダッシュボード',
+      'divisions.html': '各部門情報',
+      'division-convergence.html': '収束部門詳細',
+      'division-support.html': '支援部門詳細',
+      'division-engineering.html': '工作部門詳細',
+      'division-foreign.html': '外事部門詳細',
+      'division-port.html': '港湾部門詳細',
+      'phenomenon.html': 'アーカイブ：海蝕現象',
+      'chat.html': '機関員チャット',
+      'dashboard.html': 'マイページ',
+      'missions.html': '収束任務',
+      'classified.html': '機密情報'
+    };
+
     // Check authentication
     const currentUser = getCurrentUser();
     if (!currentUser) {
       window.location.href = './login.html';
     } else {
+      // Initialize XP if not exists
+      if (typeof currentUser.xp === 'undefined') {
+        currentUser.xp = 0;
+        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(currentUser));
+      }
+
+      // Track profile view
+      ProgressSystem.trackActivity('profile_view');
+
       // Populate user data
       document.getElementById('sidebarUserName').textContent = currentUser.name;
       document.getElementById('sidebarUserLevel').textContent = `LEVEL ${currentUser.level}`;
@@ -225,6 +318,18 @@
       document.getElementById('userName').textContent = currentUser.name;
       document.getElementById('userDivision').textContent = divisionNames[currentUser.division] || currentUser.division;
       document.getElementById('userLevel').textContent = `LEVEL ${currentUser.level}`;
+      
+      // Display XP and progress
+      document.getElementById('userXP').textContent = `${currentUser.xp || 0} XP`;
+      
+      const levelInfo = ProgressSystem.getNextLevelInfo(currentUser);
+      if (levelInfo.isMaxLevel) {
+        document.getElementById('xpNeeded').textContent = 'MAX LEVEL';
+        document.getElementById('xpProgress').style.width = '100%';
+      } else {
+        document.getElementById('xpNeeded').textContent = `${levelInfo.xpNeeded} XP`;
+        document.getElementById('xpProgress').style.width = `${levelInfo.progress}%`;
+      }
       
       // Format registration date
       const regDate = new Date(currentUser.registeredAt);
@@ -235,6 +340,78 @@
         hour: '2-digit',
         minute: '2-digit'
       });
+
+      // Display unlocked and locked content
+      displayUnlockedContent(currentUser.level);
+      displayLockedContent(currentUser.level);
+    }
+
+    function displayUnlockedContent(level) {
+      const container = document.getElementById('unlockedContent');
+      const unlockedPages = ProgressSystem.getUnlockedPages(level);
+      
+      // Filter out login and dashboard
+      const displayPages = unlockedPages.filter(p => p !== 'login.html' && p !== 'dashboard.html');
+      
+      if (displayPages.length === 0) {
+        container.innerHTML = '<p class="text-muted" style="grid-column: span 2; text-align: center;">アクセス可能なコンテンツはありません</p>';
+        return;
+      }
+
+      container.innerHTML = displayPages.map(page => {
+        const name = pageNames[page] || page;
+        return `
+          <a href="./${page}" style="text-decoration: none;">
+            <div style="padding: 1rem; background-color: rgba(0, 255, 255, 0.05); border: 1px solid rgba(0, 255, 255, 0.2); transition: all 0.3s; cursor: pointer;" 
+                 onmouseover="this.style.backgroundColor='rgba(0, 255, 255, 0.1)'" 
+                 onmouseout="this.style.backgroundColor='rgba(0, 255, 255, 0.05)'">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <svg width="16" height="16" fill="none" stroke="var(--primary)" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span style="color: var(--primary); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase;">アンロック済み</span>
+              </div>
+              <div style="color: white; font-weight: 600; font-size: 0.875rem;">${name}</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function displayLockedContent(level) {
+      const container = document.getElementById('lockedContent');
+      const lockedPages = ProgressSystem.getLockedPages(level);
+      
+      if (lockedPages.length === 0) {
+        container.innerHTML = '<p class="text-muted" style="grid-column: span 2; text-align: center;">全てのコンテンツがアンロックされました！</p>';
+        return;
+      }
+
+      // Find required level for each locked page
+      const pageRequirements = {};
+      Object.entries(ProgressSystem.LEVEL_UNLOCKS).forEach(([lvl, pages]) => {
+        pages.forEach(page => {
+          if (lockedPages.includes(page)) {
+            pageRequirements[page] = parseInt(lvl);
+          }
+        });
+      });
+
+      container.innerHTML = lockedPages.map(page => {
+        const name = pageNames[page] || page;
+        const requiredLevel = pageRequirements[page] || 0;
+        return `
+          <div style="padding: 1rem; background-color: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); opacity: 0.6;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <svg width="16" height="16" fill="none" stroke="var(--destructive)" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              <span style="color: var(--destructive); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase;">LEVEL ${requiredLevel} 必要</span>
+            </div>
+            <div style="color: var(--muted-foreground); font-weight: 600; font-size: 0.875rem;">${name}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     // Logout functionality
@@ -242,6 +419,32 @@
       if (confirm('ログアウトしますか？')) {
         clearCurrentUser();
         window.location.href = './login.html';
+      }
+    });
+
+    // Listen for progress updates
+    window.addEventListener('userProgressUpdated', function(e) {
+      const result = e.detail;
+      const updatedUser = result.user;
+      
+      // Update displays
+      document.getElementById('userLevel').textContent = `LEVEL ${updatedUser.level}`;
+      document.getElementById('sidebarUserLevel').textContent = `LEVEL ${updatedUser.level}`;
+      document.getElementById('userXP').textContent = `${updatedUser.xp || 0} XP`;
+      
+      const levelInfo = ProgressSystem.getNextLevelInfo(updatedUser);
+      if (levelInfo.isMaxLevel) {
+        document.getElementById('xpNeeded').textContent = 'MAX LEVEL';
+        document.getElementById('xpProgress').style.width = '100%';
+      } else {
+        document.getElementById('xpNeeded').textContent = `${levelInfo.xpNeeded} XP`;
+        document.getElementById('xpProgress').style.width = `${levelInfo.progress}%`;
+      }
+
+      // Refresh content lists if leveled up
+      if (result.leveledUp) {
+        displayUnlockedContent(updatedUser.level);
+        displayLockedContent(updatedUser.level);
       }
     });
   </script>

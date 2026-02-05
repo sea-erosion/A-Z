@@ -292,7 +292,17 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/progress.js"></script>
   <script>
+    // Check if user has access to this page
+    if (!ProgressSystem.checkPageAccess('divisions.html')) {
+      alert('このページにアクセスするには LEVEL 1 が必要です。');
+      window.location.href = './dashboard.html';
+    } else {
+      // Track page view and award XP
+      ProgressSystem.trackActivity('division_view');
+    }
+
     // Hover effect for division cards
     document.querySelectorAll('.division-card').forEach(card => {
       card.addEventListener('mouseenter', function() {

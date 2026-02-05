@@ -303,6 +303,7 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/progress.js"></script>
   <script>
     // LocalStorage keys
     const USERS_KEY = 'kaishoku_users';
@@ -325,6 +326,19 @@
 
     function setCurrentUser(user) {
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+    }
+
+    function updateUserInStorage(updatedUser) {
+      // Update in users list
+      const users = getUsers();
+      const index = users.findIndex(u => u.id === updatedUser.id);
+      if (index !== -1) {
+        users[index] = updatedUser;
+        saveUsers(users);
+      }
+      
+      // Update current user
+      setCurrentUser(updatedUser);
     }
 
     function clearCurrentUser() {
@@ -466,11 +480,41 @@
         if (user) {
           // Login successful
           setCurrentUser(user);
+          
+          // Check for first login or daily login bonus
+          const now = new Date();
+          const lastLogin = user.lastLogin ? new Date(user.lastLogin) : null;
+          const isFirstLogin = !user.lastLogin;
+          
+          // Check if it's a new day
+          const isDailyLogin = lastLogin && (
+            now.toDateString() !== lastLogin.toDateString()
+          );
+          
+          // Update last login
+          user.lastLogin = now.toISOString();
+          updateUserInStorage(user);
+          
           showToast('success', 'ACCESS GRANTED', `ようこそ、${user.name}さん (${user.id})`);
           
           // Redirect to dashboard after 1.5 seconds
           setTimeout(function() {
             window.location.href = './dashboard.html';
+            
+            // Award XP bonuses after redirect (will show on dashboard)
+            if (isFirstLogin) {
+              setTimeout(() => {
+                if (window.ProgressSystem) {
+                  ProgressSystem.trackActivity('first_login');
+                }
+              }, 500);
+            } else if (isDailyLogin) {
+              setTimeout(() => {
+                if (window.ProgressSystem) {
+                  ProgressSystem.trackActivity('daily_login');
+                }
+              }, 500);
+            }
           }, 1500);
         } else {
           // Login failed
