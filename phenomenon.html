@@ -229,12 +229,17 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/modal.js"></script>
   <script src="./js/progress.js"></script>
   <script>
     // Check if user has access to this page
     if (!ProgressSystem.checkPageAccess('phenomenon.html')) {
-      alert('このページにアクセスするには LEVEL 3 が必要です。');
-      window.location.href = './dashboard.html';
+      ModalSystem.warning(
+        'このページにアクセスするには LEVEL 3 が必要です。<br><br>より多くの経験値を獲得してレベルアップしてください。',
+        'ACCESS DENIED'
+      ).then(() => {
+        window.location.href = './dashboard.html';
+      });
     } else {
       // Track page view and award XP
       ProgressSystem.trackActivity('phenomenon_view');

@@ -260,6 +260,7 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/modal.js"></script>
   <script src="./js/progress.js"></script>
   <script>
     const CURRENT_USER_KEY = 'kaishoku_current_user';
@@ -292,6 +293,8 @@
       'phenomenon.html': 'アーカイブ：海蝕現象',
       'chat.html': '機関員チャット',
       'dashboard.html': 'マイページ',
+      'modules.html': 'モジュールカタログ',
+      'entities.html': '海蝕実体カタログ',
       'missions.html': '収束任務',
       'classified.html': '機密情報'
     };
@@ -416,10 +419,15 @@
 
     // Logout functionality
     document.getElementById('logoutButton').addEventListener('click', function() {
-      if (confirm('ログアウトしますか？')) {
-        clearCurrentUser();
-        window.location.href = './login.html';
-      }
+      ModalSystem.confirm(
+        'ログアウトしますか？',
+        'LOGOUT CONFIRMATION'
+      ).then(confirmed => {
+        if (confirmed) {
+          clearCurrentUser();
+          window.location.href = './login.html';
+        }
+      });
     });
 
     // Listen for progress updates

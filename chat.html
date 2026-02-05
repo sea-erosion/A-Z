@@ -417,6 +417,19 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/modal.js"></script>
+  <script src="./js/progress.js"></script>
   <script src="./js/chat.js"></script>
+  <script>
+    // Check if user has access to this page
+    if (!ProgressSystem.checkPageAccess('chat.html')) {
+      ModalSystem.warning(
+        'このページにアクセスするには LEVEL 1 が必要です。<br><br>ダッシュボードで経験値を確認し、レベルアップしてください。',
+        'ACCESS DENIED'
+      ).then(() => {
+        window.location.href = './dashboard.html';
+      });
+    }
+  </script>
 </body>
 </html>

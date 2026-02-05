@@ -292,12 +292,17 @@
   </div>
 
   <script src="./js/main.js"></script>
+  <script src="./js/modal.js"></script>
   <script src="./js/progress.js"></script>
   <script>
     // Check if user has access to this page
     if (!ProgressSystem.checkPageAccess('divisions.html')) {
-      alert('このページにアクセスするには LEVEL 1 が必要です。');
-      window.location.href = './dashboard.html';
+      ModalSystem.warning(
+        'このページにアクセスするには LEVEL 1 が必要です。<br><br>ダッシュボードで経験値を確認し、レベルアップしてください。',
+        'ACCESS DENIED'
+      ).then(() => {
+        window.location.href = './dashboard.html';
+      });
     } else {
       // Track page view and award XP
       ProgressSystem.trackActivity('division_view');
